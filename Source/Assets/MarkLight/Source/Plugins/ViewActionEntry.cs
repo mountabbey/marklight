@@ -113,14 +113,22 @@ namespace MarkLight
         /// <summary>
         /// Initializes the view action entry.
         /// </summary>
-        private void Initialize()
-        {
-            // look for a method with the same name as the entry
-            _viewActionMethod = ParentView.GetType().GetMethod(ViewActionHandlerName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-            if (_viewActionMethod == null)
-            {
-                Debug.LogError(String.Format("[MarkLight] {0}: Unable to initialize view action handler \"{1}.{2}()\" for view action \"{3}\". View action handler not found.", SourceView.GameObjectName, ParentView.ViewTypeName, ViewActionHandlerName, ViewActionFieldName));
-                return;
+        private void Initialize ()
+		{
+			// look for a method with the same name as the entry
+			_viewActionMethod = ParentView.GetType ().GetMethod (ViewActionHandlerName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+			if (_viewActionMethod == null) {
+				// BOBM - look for one with parameters
+				_viewActionMethod = ParentView.GetType ().GetMethod (ViewActionHandlerName, 
+					BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
+					null,
+					new Type[] { SourceView.GetType() },
+					null);
+
+				if (_viewActionMethod == null) {
+					Debug.LogError (String.Format ("[MarkLight] {0}: Unable to initialize view action handler \"{1}.{2}()\" for view action \"{3}\". View action handler not found.", SourceView.GameObjectName, ParentView.ViewTypeName, ViewActionHandlerName, ViewActionFieldName));
+					return;
+				}
             }
 
             ParameterInfo[] viewActionMethodParameters = _viewActionMethod.GetParameters();
