@@ -100,13 +100,17 @@ namespace MarkLight
         /// </summary>
         public static string GetValue(string dictionaryName, string resourceKey, out bool hasValue)
         {
+        	//Debug.LogFormat("ResourceDictionary GetValue: {0} {1}", dictionaryName, resourceKey);
+
             hasValue = false;
             var fullResourceKey = GetFullResourceKey(dictionaryName, resourceKey);
 
             List<Resource> resources;
             if (!_resourceLookupDictionary.TryGetValue(fullResourceKey, out resources))
             {
-                return null;
+            	//Debug.LogFormat("Failed to get value {0}", fullResourceKey);
+				// BOBM - return the resourceKey if not matched
+                return resourceKey;
             }
 
             // resource  that best matches dictionary configuration
@@ -125,7 +129,8 @@ namespace MarkLight
             }
 
             // return matched resource value or empty string if none matched
-            return matchedResource != null ? matchedResource.Value : String.Empty;            
+            // BOBM - return the resourceKey if not matched
+            return matchedResource != null ? matchedResource.Value : resourceKey; // String.Empty;            
         }
 
         /// <summary>
