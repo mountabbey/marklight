@@ -148,6 +148,11 @@ namespace MarkLight
             }
         }
 
+        // BOBM - return the String value
+        override public string ToString ()
+		{
+			return _internalValue.ToString();
+		}
         #endregion
     }
 }
