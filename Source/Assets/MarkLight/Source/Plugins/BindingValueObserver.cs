@@ -71,6 +71,11 @@ namespace MarkLight
                             // set value
                             Target.SetValue(value, callstack); 
                         }
+                        else
+                        {
+                        	// BOBM - missing value
+                        	Target.SetValue(value, callstack);
+                        }
                         break;
 
                     case BindingType.MultiBindingTransform:
